@@ -82,7 +82,8 @@ def load_standings():
         standings_dict[code] = table
         time.sleep(7)
     return standings_dict
-    def calculate_points(row, team_name):
+
+def calculate_points(row, team_name):
     if row["الفريق_المضيف"] == team_name:
         if row["أهداف_المضيف"] > row["أهداف_الضيف"]:
             return 3
@@ -139,7 +140,8 @@ def head_to_head(home_team, away_team, matches_df):
         else:
             draws += 1
     return len(h2h_matches), home_wins, away_wins, draws
-    def predict_match_advanced(home_team, away_team, matches_df, standings_dict, code, max_goals=6, recent_n=8):
+
+def predict_match_advanced(home_team, away_team, matches_df, standings_dict, code, max_goals=6, recent_n=8):
     league_avg_home = matches_df["أهداف_المضيف"].mean()
     league_avg_away = matches_df["أهداف_الضيف"].mean()
     home_scored, home_conceded, _, _ = get_team_stats_weighted(home_team, matches_df, recent_n)
@@ -193,8 +195,10 @@ def head_to_head(home_team, away_team, matches_df):
         "btts_yes": btts_yes,
         "over_2_5": over_2_5,
         "home_position": home_position,
-        "away_position": away_positi
-        st.title("⚽ توقع نتائج المباريات")
+        "away_position": away_position
+    }
+
+st.title("⚽ توقع نتائج المباريات")
 st.caption("يعتمد على الترتيب، الفورم، المواجهات المباشرة، ومعدل الأهداف")
 
 with st.spinner("جاري تحميل البيانات..."):
@@ -264,4 +268,3 @@ else:
         c2.metric("احتمالية أكثر من 2.5 هدف بالمجموع", f"{round(result['over_2_5']*100,1)}%")
 
         st.caption("تنبيه: هذي توقعات إحصائية تقريبية ولا تضمن النتيجة الفعلية للمباراة")
-    }
