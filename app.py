@@ -1,4 +1,1 @@
-streamlit
-requests
-pandas
-scipy
+import streamlit as st
