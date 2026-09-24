@@ -16,7 +16,11 @@ competitions = {
     "SA": "الدوري الإيطالي",
     "FL1": "الدوري الفرنسي",
     "DED": "الدوري الهولندي",
-    "PPL": "الدوري البرتغالي"
+    "PPL": "الدوري البرتغالي",
+    "CL": "دوري أبطال أوروبا",
+    "EC": "كأس الأمم الأوروبية",
+    "ELC": "التشامبيونشيب الإنجليزي",
+    "BSA": "الدوري البرازيلي"
 }
 
 @st.cache_data(ttl=3600)
@@ -67,19 +71,22 @@ def load_upcoming():
 def load_standings():
     standings_dict = {}
     for code in competitions.keys():
-        response = requests.get(
-            f"https://api.football-data.org/v4/competitions/{code}/standings",
-            headers=headers
-        )
-        comp_data = response.json()
-        table = {}
-        if "standings" in comp_data:
-            for entry in comp_data["standings"][0]["table"]:
-                table[entry["team"]["name"]] = {
-                    "position": entry["position"],
-                    "points": entry["points"]
-                }
-        standings_dict[code] = table
+        try:
+            response = requests.get(
+                f"https://api.football-data.org/v4/competitions/{code}/standings",
+                headers=headers
+            )
+            comp_data = response.json()
+            table = {}
+            if "standings" in comp_data:
+                for entry in comp_data["standings"][0]["table"]:
+                    table[entry["team"]["name"]] = {
+                        "position": entry["position"],
+                        "points": entry["points"]
+                    }
+            standings_dict[code] = table
+        except:
+            standings_dict[code] = {}
         time.sleep(7)
     return standings_dict
 
